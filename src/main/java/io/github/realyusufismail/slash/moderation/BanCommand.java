@@ -61,7 +61,9 @@ public class BanCommand implements Slash {
     private void triggerBan(SlashCommandInteractionEvent event, User userBan, Member commandRunner, Integer messageDeleteDuration, String reason) {
         event.getGuild().ban(UserSnowflake.fromId(userBan.getId()), messageDeleteDuration, TimeUnit.DAYS)
                 .reason(reason)
-                .queue(c -> event.reply(commandRunner.getUser().getAsTag() + " successfully banned the user " + userBan.getAsTag()).queue());
+                .queue(s -> event.reply(commandRunner.getUser().getAsTag() + " successfully banned the user " + userBan.getAsTag()).queue(),
+                        f  -> event.reply("Failed to ban the user").setEphemeral(true).queue()
+                );
     }
 
     private void checkPerms(SlashCommandInteractionEvent event, Member commandRunner, Member bot) {
